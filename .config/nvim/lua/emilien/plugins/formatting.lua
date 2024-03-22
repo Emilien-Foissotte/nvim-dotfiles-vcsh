@@ -15,7 +15,6 @@ return {
 				css = { "prettier" },
 				html = { "prettier" },
 				json = { "prettier" },
-				yaml = { "prettier" },
 				markdown = { "prettier" },
 				graphql = { "prettier" },
 				lua = { "stylua" },
@@ -23,11 +22,14 @@ return {
 				rust = { "rustfmt" },
 				terraform = { "terraform_fmt" },
 			},
-			format_on_save = {
-				lsp_fallback = true,
-				async = false,
-				timeout_ms = 1000,
-			},
+			format_on_save = function(bufnr)
+				-- Disable autoformat on certain filetypes
+				local ignore_filetypes = { "sql", "yaml" }
+				if vim.tbl_contains(ignore_filetypes, vim.bo[bufnr].filetype) then
+					return
+				end
+				return { lsp_fallback = true, async = false, timeout_ms = 1000 }
+			end,
 		})
 
 		vim.keymap.set({ "n", "v" }, "<leader>mp", function()
