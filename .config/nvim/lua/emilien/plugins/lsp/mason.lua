@@ -51,6 +51,7 @@ return {
 				"ruff", -- python formatter
 				"pylint", -- python linter
 				"eslint_d", -- js linter
+				"sqlfluff", --sqlformatter
 			},
 		})
 	end,

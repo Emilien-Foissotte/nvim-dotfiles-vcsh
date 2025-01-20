@@ -6,6 +6,31 @@ return {
 		local conform = require("conform")
 
 		conform.setup({
+			formatters = {
+				injected = {
+					options = {
+						ignore_errors = false,
+						lang_to_formatters = {
+							sql = { "sqlfluff" },
+						},
+						lang_to_ext = {
+							sql = "sql",
+						},
+					},
+				},
+				sqlfluff = {
+					command = "sqlfluff",
+					args = {
+						"fix",
+						"--dialect",
+						"athena",
+						"--disable-progress-bar",
+						"-n",
+						"-",
+					},
+					stdin = true,
+				},
+			},
 			formatters_by_ft = {
 				javascript = { "prettier" },
 				typescript = { "prettier" },
@@ -21,6 +46,7 @@ return {
 				python = { "isort", "ruff_format" },
 				rust = { "rustfmt" },
 				terraform = { "terraform_fmt" },
+				sql = { "sqlfluff" },
 			},
 			format_on_save = function(bufnr)
 				-- Disable autoformat on certain filetypes
